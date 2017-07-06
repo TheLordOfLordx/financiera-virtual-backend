@@ -1,10 +1,8 @@
 module.exports = function(app, apiRoutes){
     var mongoose = require('mongoose');
-    var user_manager = require('../models/userHelper');
+    var user_manager = require('../models/user_manager');
     var path = require("path");
     var User = require('../models/user');
-    var _batmanMailer = require(path.join(process.env.PWD , "helpers", "BatmanMailer", "index.js"));
-    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
     var crypto = require("crypto");
 
     function create(req, res){
