@@ -57,8 +57,6 @@ module.exports = function(app, apiRoutes){
     }
 
     function users(req, res){
-        var Role = require("../models/roles");
-
         User.find().exec(function(err, users){
             if(!err){
                 res.send(users);
@@ -67,8 +65,6 @@ module.exports = function(app, apiRoutes){
     }
 
     function user(req, res){
-        var Role = require("../models/roles");
-
         User
         .findOne( mongoose.Types.ObjectId(req.params.id))
         .exec(function(err, rs){
@@ -93,7 +89,6 @@ module.exports = function(app, apiRoutes){
 
           var jwt = require('jsonwebtoken');
           var UserSchema = require('../models/user');
-          var Role = require('../models/roles');
 
          UserSchema.findOne({ email : req.body.email }).exec(function(err, user){
             if(!user){
