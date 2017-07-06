@@ -20,15 +20,10 @@ var _Schema = new Schema({
 	  email : { type : String, trim : true , unique : true, lowercase:true},
 	  data:{ type : Object},
 	  active : { type : Boolean, default : true},
-	  type : { type : String, trim : true, default : 'ADMINISTRATOR'},
+	  type : { type : String, trim : true, default : 'CLIENT'},
 	  _role : [{ type : Schema.Types.ObjectId , ref : 'Role'}],
-	  _permission :{ type : Schema.Types.ObjectId , ref : 'permission'},
-	  _company : { type : Schema.Types.ObjectId , ref : 'company'},
-	  _grocery : [{ type : Schema.Types.ObjectId , ref : 'grocery'}],
-	  _route :  [{ type : Schema.Types.ObjectId , ref : 'route'}],
 	  resetPasswordToken: String,
-  	  resetPasswordExpires: Date,
-  	  verificationCode : String
+  	  resetPasswordExpires: Date
 });
 
 _Schema.pre('save', function (next) {
