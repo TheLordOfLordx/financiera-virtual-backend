@@ -1,6 +1,6 @@
 module.exports = function(app, apiRoutes){
     var mongoose = require('mongoose');
-    var userHelper = require('../models/userHelper');
+    var user_manager = require('../models/userHelper');
     var path = require("path");
     var User = require('../models/user');
     var _batmanMailer = require(path.join(process.env.PWD , "helpers", "BatmanMailer", "index.js"));
@@ -9,167 +9,20 @@ module.exports = function(app, apiRoutes){
 
     function create(req, res){
        var data = req.body;
-       var _plainPwd = req.body.password;
-       if(req._route){
-           data._route = [];
-          for(r in req._route){
-             data._route.push(mongoose.Types.ObjectId(req._route[r]));
-          }
-       }
+       var password_text = req.body.password;
 
-       if(req._permission){
-           data._permission = mongoose.Types.ObjectId(req._permission);
-       }
-
-       if(req._grocery){
-          data._grocery = [];
-          for(x in req._grocery){
-              data._grocery.push(mongoose.Types.ObjectId(req._grocery[x]))
-          }
-       }
-
-        userHelper.create(data, function(err, usuario){
+        user_manager.create(data, function(err, user){
           if(err){
-            console.log("erro", err);
               res.status(409).json({code : 11000});
               return;
           }
 
-            if(usuario){
-              res.status(200).json(usuario);
+          if(user){
+            res.status(200).json(user);
+          }
 
-              var _html;
-              var mailOptions = {
-                    from: "listerine1989@gmail.com",
-                    to: usuario.email,
-                    subject: 'Bienvenido a Shoply'
-              }     
-
-              if(usuario.type == "ADMINISTRATOR"){
-                    _html = _compiler.render({_data : {
-                      name : usuario.name,
-                      last_name : usuario.last_name,
-                      email : usuario.email,
-                      password : _plainPwd
-                    }},'welcome/index.ejs');
-
-                    mailOptions.html = _html;
-
-                    var _shell  = _batmanMailer.bulk([mailOptions]);
-
-                    _shell.stdout.on('data', function(output) {
-                        console.log('stdout: ' + output);
-                    });
-
-                    _shell.stderr.on('data', function(output) {
-                        console.log('stdout: ' + output);
-                    });
-
-                    _shell.on('close', function(code) {
-                        console.log('closing code: ' + code);
-                    });  
-
-              }else if(usuario.type == "SELLER"){
-                    User.findOne({email : usuario.email}).exec(function(err, rs){
-                        if(!err){
-                            _html = _compiler.render({_data : {
-                              name : usuario.name,
-                              last_name : usuario.last_name,
-                              email : usuario.email,
-                              password : _plainPwd
-                            }},'seller/index.ejs');
-
-                            mailOptions.html = _html;
-
-                            var _shell  = _batmanMailer.bulk([mailOptions]);
-
-                            _shell.stdout.on('data', function(output) {
-                                console.log('stdout: ' + output);
-                            });
-
-                            _shell.stderr.on('data', function(output) {
-                                console.log('stdout: ' + output);
-                            });
-
-                            _shell.on('close', function(code) {
-                                console.log('closing code: ' + code);
-                            });                            
-                          }
-                    });
-              }else if(usuario.type == "EMPLOYE"){
-                    User.findOne({email : usuario.email}).exec(function(err, rs){
-                        if(!err){
-                            _html = _compiler.render({_data : {
-                              name : usuario.name,
-                              last_name : usuario.last_name,
-                              email : usuario.email,
-                              password : _plainPwd
-                            }},'employe/index.ejs');
-
-                            mailOptions.html = _html;
-
-                            var _shell  = _batmanMailer.bulk([mailOptions]);
-
-                            _shell.stdout.on('data', function(output) {
-                                console.log('stdout: ' + output);
-                            });
-
-                            _shell.stderr.on('data', function(output) {
-                                console.log('stdout: ' + output);
-                            });
-
-                            _shell.on('close', function(code) {
-                                console.log('closing code: ' + code);
-                            });                            
-                          }
-                    });
-              }
-            }
         });
     }
-
-    function verificationCode(req, res){
-      User.findOne({_id : mongoose.Types.ObjectId(req.params.user)}).exec(function(err, user){
-          if(!err){
-              crypto.pseudoRandomBytes(4, function (err, raw){
-                  user.verificationCode =  raw.toString('hex');
-                  user.save(function(err, rs){
-                    if(!err){
-                        var _html;
-                        var mailOptions = {
-                              from: "listerine1989@gmail.com",
-                              to: user.email,
-                              subject: 'Codigo de verificación'
-                        }  
-
-                        _html = _compiler.render({_data : {
-                          verificationCode : raw.toString('hex')
-                        }},'verificationCode/index.ejs');
-
-                        mailOptions.html = _html;
-
-                        var _shell  = _batmanMailer.bulk([mailOptions]);
-
-                        _shell.stdout.on('data', function(output) {
-                            console.log('stdout: ' + output);
-                        });
-
-                        _shell.stderr.on('data', function(output) {
-                            console.log('stdout: ' + output);
-                        });
-
-                        _shell.on('close', function(code) {
-                            console.log('closing code: ' + code);
-                        });
-                        
-                        res.status(200).json({message:"ok"});                        
-                    }
-                  });
-                                 
-              });
-            }
-      });    
-  }
 
     function update(req, res){
          var data = {};
@@ -181,80 +34,22 @@ module.exports = function(app, apiRoutes){
          !REQ.email || (data.email = REQ.email);
          !REQ.name || (data.name = REQ.name);
          !REQ.last_name || (data.last_name = REQ.last_name);
-         !REQ.verificationCode || (data.verificationCode = REQ.verificationCode);
 
-         if(REQ.verificationCode){
-             User.findOne({_id : mongoose.Types.ObjectId(req.params.id)}, function(err, user){
-                if(user.verificationCode != REQ.verificationCode){
-                  res.status(400).json({err : 'invalid code verification'});
-                }else{
-                   data.verificationCode = undefined;
-                   if(REQ._route){
-                       data._route = [];
-                      for(r in REQ._route){
-                         data._route.push(mongoose.Types.ObjectId(REQ._route[r]));
-                      }
-                   }
+          if(REQ.password){
+            data.password = require(process.env.PWD + "/helpers/crypto-util")(REQ.password);
+          } 
 
-                   if(REQ._permission){
-                       data._permission = mongoose.Types.ObjectId(REQ._permission._id || REQ._permission);
-                   }
-       
-                    if(REQ._grocery){
-                          data._grocery = [];
-                          for(x in REQ._grocery){
-                              data._grocery.push(mongoose.Types.ObjectId(REQ._grocery[x]))
-                          }
-                    }
+          data = { $set : data }; 
 
-                   if(REQ.password){
-                      data.password = require(process.env.PWD + "/helpers/crypto-util")(REQ.password);
-                   }
-
-                   data = { $set : data }; 
-
-                   userHelper.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
-                      if(rs){
-                        res.json(rs);
-                      }
-                   });                  
-                }
-             });          
-         }else{
-             if(REQ._route){
-                 data._route = [];
-                for(r in REQ._route){
-                   data._route.push(mongoose.Types.ObjectId(REQ._route[r]));
-                }
-             }
-
-             if(REQ._permission){
-                data._permission = mongoose.Types.ObjectId(REQ._permission._id || REQ._permission);
-             }
-
-            if(REQ._grocery){
-                data._grocery = [];
-                for(x in REQ._grocery){
-                      data._grocery.push(mongoose.Types.ObjectId(REQ._grocery[x]))
-                }
-            }
-
-            if(REQ.password){
-              data.password = require(process.env.PWD + "/helpers/crypto-util")(REQ.password);
-            } 
-
-             data = { $set : data }; 
-
-             userHelper.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
-                if(rs){
+          user_manager.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
+              if(rs){
                   res.json(rs);
-                }
-             });   
-         }
+              }
+          });   
     }
 
     function remove(req, res){
-        userHelper.remove(req.params.id, function(err, user){
+        user_manager.remove(req.params.id, function(err, user){
             if(!err){
                 user.remove();
                 res.status(200)
@@ -266,11 +61,7 @@ module.exports = function(app, apiRoutes){
     function users(req, res){
         var Role = require("../models/roles");
 
-        User.find()
-        .populate("_route")
-        .populate("_grocery")
-        .populate("_permission")
-        .exec(function(err, users){
+        User.find().exec(function(err, users){
             if(!err){
                 res.send(users);
             }
@@ -306,7 +97,7 @@ module.exports = function(app, apiRoutes){
           var UserSchema = require('../models/user');
           var Role = require('../models/roles');
 
-         UserSchema.findOne({email : req.body.email}).exec(function(err, user){
+         UserSchema.findOne({ email : req.body.email }).exec(function(err, user){
             if(!user){
                     res.status(401).json({err : 'Usuario o clave incorrectos'});
                     return;
@@ -319,7 +110,7 @@ module.exports = function(app, apiRoutes){
                       expiresIn: 43200 // 24 horas (suficientes para una jornada laboral)
                     });
 
-                  userHelper.createSession({token : token, user : user }, function(err, userToken){
+                  user_manager.createSession({token : token, user : user }, function(err, userToken){
                         res.status(200).json({token:token, user : user});
                   });  
             }else{
