@@ -2,9 +2,12 @@ module.exports = function(app, apiRoutes){
     var mongoose = require('mongoose');
     var user_manager = require('../models/user_manager');
     var path = require("path");
+    var config = require(process.env.PWD + '/config.js');
+
     var User = require('../models/user');
     var crypto = require("crypto");
     var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
+
 
     var api_key = 'key-7060b4df5bc7256cbdbe3f0f4933414a';
     var domain = 'daimont.com';
@@ -27,7 +30,7 @@ module.exports = function(app, apiRoutes){
                   name : user.name,
                   last_name : user.last_name,
                   email : user.email,
-                  activation_token : user.activation_token
+                  activation_url : config.base_url + "#/account/activate/" + user.activation_token
                }}, 'activation/index.ejs');
 
               var data = {
