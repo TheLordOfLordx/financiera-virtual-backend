@@ -30,8 +30,8 @@ module.exports = function(app, apiRoutes){
                }}, 'activation/index.ejs');
 
               var data = {
-                from: ' <noreply@daimont.com>',
-                to: 'listerine1989@gmail.com',
+                from: ' <daimont@daimont.com>',
+                to: user.email,
                 subject: 'Activar Cuenta',
                 text: 'proceda con la activación de su cuenta',
                 html: _html
