@@ -28,7 +28,8 @@ var _Schema = new Schema({
 
 _Schema.pre('save', function (next) {
     this.full_name = (this.name || '') + ' ' + (this.last_name  || '');
-    this.activation_token = crypto.createHmac('sha256', config.secret).update(this._id).digest('hex');
+    this.activation_token = crypto.createHmac('sha256', config.secret).update(this._id.toString()).digest('hex');
+    
     next();
 });
 
