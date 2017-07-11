@@ -26,7 +26,8 @@ module.exports = function(app, apiRoutes){
               var _html = _compiler.render({ _data : {
                   name : user.name,
                   last_name : user.last_name,
-                  email : user.email
+                  email : user.email,
+                  activation_token : user.activation_token
                }}, 'activation/index.ejs');
 
               var data = {

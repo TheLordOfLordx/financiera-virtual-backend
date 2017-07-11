@@ -59,7 +59,7 @@
       <table style="box-sizing: border-box; border-collapse: separate !important; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
         <tbody><tr>
           <td style="box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size: 14px; vertical-align: top;" valign="top">
-           <p style="font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;"><strong><%= _data.name %> <%= _data.last_name %></strong>Gracias por registrarte.</p>
+           <p style="font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;"><strong><%= _data.name %> <%= _data.last_name %></strong>&nbsp;Gracias por registrarte.</p>
             <p style="font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">Para activar tu cuenta debes hacer click sobre el boton activar</p>
           </td>
          </tr>
@@ -80,7 +80,7 @@
             <table cellpadding="0" cellspacing="0" style="box-sizing: border-box; border-collapse: separate !important; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
               <tbody><tr>
                 <td style="box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size: 14px; vertical-align: top; background-color: #00999f; border-radius: 5px; text-align: center;" valign="top" bgcolor="#00999f" align="center">
-                  <a href="Absolute URL" style="box-sizing: border-box; border-color: #00999f; text-decoration: none; background-color: #00999f; border: solid 1px #00999f; border-radius: 5px; cursor: pointer; color: #ffffff; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; display: inline-block;">ACTIVAR</a>
+                  <a href=<%= _data.activation_token %> style="box-sizing: border-box; border-color: #00999f; text-decoration: none; background-color: #00999f; border: solid 1px #00999f; border-radius: 5px; cursor: pointer; color: #ffffff; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; display: inline-block;">ACTIVAR</a>
                 </td>
               </tr>
             </tbody></table>
