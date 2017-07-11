@@ -25,7 +25,7 @@ module.exports = function(app, apiRoutes){
           if(user){
 
           var data = {
-            from: ' <mailgun@daimont.com>',
+            from: ' <noreply@daimont.com>',
             to: 'listerine1989@gmail.com',
             subject: 'Hello',
             text: 'Hola como estas?'
