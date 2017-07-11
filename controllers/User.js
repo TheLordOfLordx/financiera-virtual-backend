@@ -23,26 +23,25 @@ module.exports = function(app, apiRoutes){
           }
 
           if(user){
+              var _html = _compiler.render({ _data : {
+                  name : user.name,
+                  last_name : user.last_name,
+                  email : user.email
+               }}, 'activation/index.ejs');
 
-          var data = {
-            from: ' <noreply@daimont.com>',
-            to: 'listerine1989@gmail.com',
-            subject: 'Hello',
-            text: 'Hola como estas?'
-          };
+              var data = {
+                from: ' <noreply@daimont.com>',
+                to: 'listerine1989@gmail.com',
+                subject: 'Activar Cuenta',
+                text: 'proceda con la activación de su cuenta',
+                html: _html
+              };
 
-          mailgun.messages().send(data, function (error, body) {
-            console.log(body);
-          });
-              
-              /*var _html = _compiler.render({ _data : {
-                  name : usuario.name,
-                  last_name : usuario.last_name,
-                  email : usuario.email
-               }}, 'activation/index.ejs');*/
-
+              mailgun.messages().send(data, function (error, body) {
+                console.log(body);
+              });
+                  
               res.status(200).json(user);
-
           }
 
         });
