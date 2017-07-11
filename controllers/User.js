@@ -25,10 +25,10 @@ module.exports = function(app, apiRoutes){
           if(user){
 
           var data = {
-            from: 'Excited User <me@samples.mailgun.org>',
+            from: ' <mailgun@daimont.com>',
             to: 'listerine1989@gmail.com',
             subject: 'Hello',
-            text: 'Testing some Mailgun awesomness!'
+            text: 'Hola como estas?'
           };
 
           mailgun.messages().send(data, function (error, body) {
