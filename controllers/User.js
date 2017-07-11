@@ -4,19 +4,45 @@ module.exports = function(app, apiRoutes){
     var path = require("path");
     var User = require('../models/user');
     var crypto = require("crypto");
+    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
+
+    var api_key = 'key-7060b4df5bc7256cbdbe3f0f4933414a';
+    var domain = 'www.daimont.com';
+    var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+
 
     function create(req, res){
        var data = req.body;
        var password_text = req.body.password;
 
         user_manager.create(data, function(err, user){
+          
           if(err){
               res.status(409).json({code : 11000});
               return;
           }
 
           if(user){
-            res.status(200).json(user);
+
+          var data = {
+            from: 'Excited User <me@samples.mailgun.org>',
+            to: 'listerine1989@gmail.com',
+            subject: 'Hello',
+            text: 'Testing some Mailgun awesomness!'
+          };
+
+          mailgun.messages().send(data, function (error, body) {
+            console.log(body);
+          });
+              
+              /*var _html = _compiler.render({ _data : {
+                  name : usuario.name,
+                  last_name : usuario.last_name,
+                  email : usuario.email
+               }}, 'activation/index.ejs');*/
+
+              res.status(200).json(user);
+
           }
 
         });
