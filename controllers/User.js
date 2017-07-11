@@ -9,9 +9,16 @@ module.exports = function(app, apiRoutes){
     var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
 
 
-    var api_key = 'key-7060b4df5bc7256cbdbe3f0f4933414a';
+    /*var api_key = 'key-7060b4df5bc7256cbdbe3f0f4933414a';
     var domain = 'daimont.com';
-    var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+    var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});*/
+
+  var helper = require('sendgrid').mail;
+  var fromEmail = new helper.Email('noreply@daimont.com');
+  var toEmail = new helper.Email('listerine1989@gmail.com.com');
+  var subject = 'Sending with SendGrid is Fun';
+  var content = new helper.Content('text/plain', 'and easy to do anywhere, even with Node.js');
+  var mail = new helper.Mail(fromEmail, subject, toEmail, content);
 
 
     function create(req, res){
@@ -33,7 +40,23 @@ module.exports = function(app, apiRoutes){
                   activation_url : config.base_url + "#/account/activate/" + user.activation_token
                }}, 'activation/index.ejs');
 
-              var data = {
+                var sg = require('sendgrid')('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');
+                var request = sg.emptyRequest({
+                  method: 'POST',
+                  path: '/v3/mail/send',
+                  body: mail.toJSON()
+                });
+
+                sg.API(request, function (error, response) {
+                  if (error) {
+                    console.log('Error response received');
+                  }
+                  console.log(response.statusCode);
+                  console.log(response.body);
+                  console.log(response.headers);
+                });
+
+              /*var data = {
                 from: ' Daimont <noreply@daimont.com>',
                 to: user.email,
                 subject: 'Activar Cuenta',
@@ -43,7 +66,7 @@ module.exports = function(app, apiRoutes){
 
               mailgun.messages().send(data, function (error, body) {
                 console.log(body);
-              });
+              });*/
                   
               res.status(200).json(user);
           }
