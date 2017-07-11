@@ -1,5 +1,4 @@
 var crypto = require('crypto');
-
 var base_path = process.env.PWD;
 
 var config = require(base_path + '/config.js');
@@ -19,15 +18,17 @@ var _Schema = new Schema({
 	  full_name : { type : String, trim : true, lowercase : true},
 	  email : { type : String, trim : true , unique : true, lowercase:true},
 	  data:{ type : Object},
-	  active : { type : Boolean, default : true},
+	  active : { type : Boolean, default : false},
 	  type : { type : String, trim : true, default : 'CLIENT'},
 	  _role : [{ type : Schema.Types.ObjectId , ref : 'Role'}],
+	  activation_token : String,
 	  resetPasswordToken: String,
   	  resetPasswordExpires: Date
 });
 
 _Schema.pre('save', function (next) {
     this.full_name = (this.name || '') + ' ' + (this.last_name  || '');
+    this.activation_token = crypto.createHmac('sha256', config.secret).update(this._id).digest('hex');
     next();
 });
 

@@ -235,9 +235,27 @@ module.exports = function(app, apiRoutes){
       });      
   }
 
+  function activate(req, res){
+      var REQ = req.body || req.params;
+      
+      User.findOne( { activation_token: REQ.activation_token  } , function(err, user) {
+        if (!user) {
+            res.status(404).json({message: 'no user found or activation link has been expired'});
+        }else{
+          user.active = true;
+          user.save(function(err, rs){
+              if(rs){
+                  res.status(200).json({message : "ok"});
+              }
+          })
+        }
+      });      
+  }
+
     apiRoutes.get('/user', users);
     apiRoutes.get('/user/:id', user);
     app.get('/api/user/exists/:email', exists);
+    app.post('/api/user/activate/:user', activate);
     app.post('/api/reset/:token', reset);
     app.post('/api/password-reset/', passwordReset);
     app.post('/api/recover/', recover);
