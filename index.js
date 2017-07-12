@@ -29,15 +29,11 @@ apiRoutes.use(function(req, res, next) {
         console.log("header", req.headers);
 
         if(facebook_token){
-            passport.use(new FacebookTokenStrategy({
-                clientID: process.env.FACEBOOK_ID,
-                clientSecret: process.env.FACEBOOK_SECRET
-              }, function(accessToken, refreshToken, profile, done) {
-                User.find( { "data.facebook_id": profile.id }, function (error, user) {
-                    return done(error, user);
-                });
-              }
-            ));  
+              passport.authenticate('facebook-token', function(error, user, info) {
+                if(user){
+                    next();
+                }
+              })
         }
 
         if (token) {
