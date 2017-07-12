@@ -31,12 +31,9 @@ apiRoutes.use(function(req, res, next) {
             FB.setAccessToken(facebook_token);
                 FB.api('me/', function (res) {
                   if(!res.error){
-                      next();
+                      return next();
                   }
             });
-
-
-            return;
         }
 
         if (token) {
