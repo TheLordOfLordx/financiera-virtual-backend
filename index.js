@@ -36,7 +36,7 @@ apiRoutes.use(function(req, res, next) {
                     console.log("response", response);
                     next();
                 }else{
-                  res.status(500).json(res);
+                  res.status(500).json(response);
                 }
             });
 
