@@ -10,7 +10,7 @@ var morgan = require('morgan');
 var cluster = require('cluster');
 var cores = require('os').cpus().length;  
 var passport = require("passport");
-var User = require('models/user');
+var User = require('./models/user');
 var FacebookTokenStrategy = require('passport-facebook-token');
 
 app.use(cors());
