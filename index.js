@@ -34,12 +34,10 @@ apiRoutes.use(function(req, res, next) {
                 clientSecret: process.env.FACEBOOK_SECRET
               }, function(accessToken, refreshToken, profile, done) {
                 User.find( { "data.facebook_id": profile.id }, function (error, user) {
-                    next();
+                    return done(error, user);
                 });
               }
             ));  
-
-            return;
         }
 
         if (token) {
