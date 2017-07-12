@@ -28,10 +28,14 @@ apiRoutes.use(function(req, res, next) {
 
         if(facebook_token){
               passport.authenticate('facebook-token', function(error, facebook_user, info) {
+                if(error){
+                  console.log("error", err);
+                }
+
                 if(facebook_user){
                     next();
                 }
-              })(req, res);
+              })(req, res, next);
         }
 
         if (token) {
