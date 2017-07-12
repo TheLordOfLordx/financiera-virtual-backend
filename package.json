@@ -39,6 +39,8 @@
     "node-gcm": "^0.14.0",
     "node-sass": "^3.4.2",
     "nodemailer": "^0.7.1",
+    "passport": "^0.3.2",
+    "passport-facebook-token": "^3.3.0",
     "pdfkit": "^0.7.1",
     "q": "^1.4.1",
     "sendgrid": "^5.1.2",

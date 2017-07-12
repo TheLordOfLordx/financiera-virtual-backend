@@ -9,7 +9,11 @@ var cors = require('cors');
 var jwt = require('jsonwebtoken');
 var morgan = require('morgan');
 var cluster = require('cluster');
-var cores = require('os').cpus().length;  //numero de cpus
+var cores = require('os').cpus().length;  
+var passport = require("passport");
+var User = require('../models/user');
+var FacebookTokenStrategy = require('passport-facebook-token');
+
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended : true}));
@@ -22,9 +26,24 @@ apiRoutes = express.Router();
 
 apiRoutes.use(function(req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-daimont-auth'];
+        var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access_token '];
+
+        if(facebook_token){
+            passport.use(new FacebookTokenStrategy({
+                clientID: process.env.FACEBOOK_ID,
+                clientSecret: process.env.FACEBOOK_SECRET
+              }, function(accessToken, refreshToken, profile, done) {
+                User.find( { "data.facebook_id": profile.id }, function (error, user) {
+                    next();
+                });
+              }
+            ));  
+        }
+
         if (token) {
             jwt.verify(token, app.get("secret"), function(err, decoded) {
                 var Session = require("./models/session");
+                
                 if (err){
                         return res.status(401).json({ success: false, message: 'Failed to authenticate token.' }); 
                 }
