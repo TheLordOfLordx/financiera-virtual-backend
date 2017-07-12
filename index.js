@@ -23,7 +23,6 @@ process.env.PWD = process.cwd() || process.env.PWD;
 
 apiRoutes = express.Router();
 
-
 apiRoutes.use(function(req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-daimont-auth'];
         var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access-token'];
@@ -31,12 +30,9 @@ apiRoutes.use(function(req, res, next) {
         if(facebook_token){
           FB.setAccessToken(facebook_token);
               FB.api('me/', function (res) {
-                if(!res || res.error) {
-                    console.log(!res ? 'error occurred' : res.error);
-                  return;
+                if(!res.error){
+                    next();
                 }
-                
-                next();
               });
         }
 
