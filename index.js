@@ -22,6 +22,16 @@ process.env.PWD = process.cwd() || process.env.PWD;
 
 apiRoutes = express.Router();
 
+passport.use(new FacebookTokenStrategy({
+    clientID: process.env.FACEBOOK_ID,
+    clientSecret: process.env.FACEBOOK_SECRET
+  }, function(accessToken, refreshToken, profile, done) {
+    User.findOrCreate({facebookId: profile.id}, function (error, user) {
+      return done(error, user);
+    });
+  }
+));
+
 apiRoutes.use(function(req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-daimont-auth'];
         var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access-token'];
