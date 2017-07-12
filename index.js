@@ -25,15 +25,13 @@ apiRoutes = express.Router();
 apiRoutes.use(function(req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-daimont-auth'];
         var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access-token'];
-        console.log("ft", facebook_token);
-        console.log("header", req.headers);
 
         if(facebook_token){
-              passport.authenticate('facebook-token', function(error, user, info) {
-                if(user){
-                    return next();
+              passport.authenticate('facebook-token', function(error, facebook_user, info) {
+                if(facebook_user){
+                    next();
                 }
-              })
+              })(req, res);
         }
 
         if (token) {
