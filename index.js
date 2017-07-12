@@ -31,14 +31,12 @@ apiRoutes.use(function(req, res, next) {
         if(facebook_token){
           FB.setAccessToken(facebook_token);
               FB.api('me/', function (res) {
-                
                 if(!res || res.error) {
                     console.log(!res ? 'error occurred' : res.error);
                   return;
                 }
-
-                console.log('Post Id: ' + res);
-                return next();
+                
+                next();
               });
         }
 
