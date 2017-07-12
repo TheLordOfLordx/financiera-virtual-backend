@@ -31,7 +31,7 @@ apiRoutes.use(function(req, res, next) {
         if(facebook_token){
               passport.authenticate('facebook-token', function(error, user, info) {
                 if(user){
-                    next();
+                    return next();
                 }
               })
         }
