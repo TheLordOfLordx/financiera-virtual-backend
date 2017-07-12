@@ -26,7 +26,8 @@ apiRoutes.use(function(req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-daimont-auth'];
         var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access_token '];
         console.log("ft", facebook_token);
-
+        console.log("header", req.headers);
+        
         if(facebook_token){
             passport.use(new FacebookTokenStrategy({
                 clientID: process.env.FACEBOOK_ID,
