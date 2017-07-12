@@ -32,7 +32,7 @@ apiRoutes.use(function(req, res, next) {
                 if(res){
                     next();
                 }
-            }
+            });
         }
 
         if (token) {
