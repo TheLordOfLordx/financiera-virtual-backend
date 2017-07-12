@@ -28,12 +28,15 @@ apiRoutes.use(function(req, res, next) {
         var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access-token'];
 
         if(facebook_token){
-          FB.setAccessToken(facebook_token);
-              FB.api('me/', function (res) {
-                if(!res.error){
-                    next();
-                }
-              });
+            FB.setAccessToken(facebook_token);
+                FB.api('me/', function (res) {
+                  if(!res.error){
+                      next();
+                  }
+            });
+
+
+            return;
         }
 
         if (token) {
