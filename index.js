@@ -11,8 +11,9 @@ var cluster = require('cluster');
 var cores = require('os').cpus().length;  
 var passport = require("passport");
 var User = require('./models/user');
-var FacebookTokenStrategy = require('passport-facebook-token');
+var FB = require('facebook-node');
 
+FB.setApiVersion("v2.2");
 app.use(cors());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json({limit: "50mb"}));
@@ -28,7 +29,17 @@ apiRoutes.use(function(req, res, next) {
         var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access-token'];
 
         if(facebook_token){
-            return next();
+          FB.setAccessToken(facebook_token);
+              FB.api('me/', function (res) {
+                
+                if(!res || res.error) {
+                    console.log(!res ? 'error occurred' : res.error);
+                  return;
+                }
+
+                console.log('Post Id: ' + res);
+                return next();
+              });
         }
 
         if (token) {
