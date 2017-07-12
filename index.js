@@ -31,9 +31,9 @@ apiRoutes.use(function(req, res, next) {
         console.log("faceboo token", facebook_token);
 
         if(facebook_token){
-            FB.api('me', { fields: ['id', 'name'], access_token: facebook_token }, function (res) {
-                if(res && !res.error){
-                  console.log("response", res);
+            FB.api('me', { fields: ['id', 'name'], access_token: facebook_token }, function (response) {
+                if(response && !response.error){
+                    console.log("response", response);
                     next();
                 }else{
                   res.status(500).json(res);
