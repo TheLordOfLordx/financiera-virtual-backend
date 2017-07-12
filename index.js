@@ -32,9 +32,11 @@ apiRoutes.use(function(req, res, next) {
 
         if(facebook_token){
             FB.api('me', { fields: ['id', 'name'], access_token: facebook_token }, function (res) {
-                if(res){
+                if(res && !res.error){
                   console.log("response", res);
                     next();
+                }else{
+                  res.status(500).json(res);
                 }
             });
 
