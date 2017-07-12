@@ -26,14 +26,10 @@ apiRoutes = express.Router();
 apiRoutes.use(function(req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-daimont-auth'];
         var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access-token'];
-
-        console.log("token", token);
-        console.log("faceboo token", facebook_token);
-
+        
         if(facebook_token){
             FB.api('me', { fields: ['id', 'name'], access_token: facebook_token }, function (response) {
                 if(response && !response.error){
-                    console.log("response", response);
                     next();
                 }else{
                   res.status(500).json(response);
