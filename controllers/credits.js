@@ -9,7 +9,7 @@ module.exports = function(app, apiRoutes, io){
     function get(req, res){
       var REQ = req.params; 
 
-       Model.find().exec(function(err, rs){
+       Model.find({ _user :  mongoose.Types.ObjectId(REQ.user) }).exec(function(err, rs){
            if(!err){
               res.status(200).json(rs);
            }else{
@@ -24,7 +24,7 @@ module.exports = function(app, apiRoutes, io){
 
       var REQ = req.params; 
 
-       Model.findOne({_id : REQ.id}).exec(function(err, rs){
+       Model.findOne({ _id : REQ.id , _user :  mongoose.Types.ObjectId(REQ.user) }).exec(function(err, rs){
            if(!err){
               res.status(200).json(rs);
            }else{
@@ -59,7 +59,7 @@ module.exports = function(app, apiRoutes, io){
 
   		data = { $set : data };          
 
-  		Model.update({ _id : mongoose.Types.ObjectId(req.params.id) }, data, function(err, rs){
+  		Model.update({ _id : mongoose.Types.ObjectId(req.params.id), _user :  mongoose.Types.ObjectId(REQ.user)  }, data, function(err, rs){
   			if(rs){
   				res.status(200).json(rs);
   			}else{
@@ -70,7 +70,7 @@ module.exports = function(app, apiRoutes, io){
 
 
     function remove(req, res){
-        Model.remove({_id : mongoose.Types.ObjectId(req.params.id)}, function(err, rs){
+        Model.remove({ _id : mongoose.Types.ObjectId(req.params.id) , _user :  mongoose.Types.ObjectId(REQ.user) }, function(err, rs){
               if(!err){
                   res.status(200).json(rs);
               }else{
@@ -79,11 +79,11 @@ module.exports = function(app, apiRoutes, io){
         });
 	   }
 
-    apiRoutes.get("/" + _url_alias, get);
-    apiRoutes.get("/" + _url_alias + "/:id", getById);
+    apiRoutes.get("/" + _url_alias + "/:user", get);
+    apiRoutes.get("/" + _url_alias + "/user:/:id", getById);
     apiRoutes.post("/" + _url_alias, post);
-    apiRoutes.put("/" + _url_alias + "/:id", update);
-    apiRoutes.delete("/" + _url_alias + "/:id", remove);
+    apiRoutes.put("/" + _url_alias + "/:user/:id", update);
+    apiRoutes.delete("/" + _url_alias + "/:user/:id", remove);
 
     return this;
 }

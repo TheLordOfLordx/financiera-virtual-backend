@@ -9,7 +9,8 @@ var timestamps = require('mongoose-timestamp');
 var metadata = require('./plugins/metadata');
 
 var _Schema = new Schema({
-	  data : Object
+	  data : Object,
+	  _user : { type : Schema.Types.ObjectId , ref : 'User'},
 });
 
 _Schema.pre('save', function (next) {
