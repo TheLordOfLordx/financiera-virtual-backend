@@ -65,7 +65,7 @@ module.exports = function(app, apiRoutes, io){
 		function update(req, res){
 			var data = {};
 			var REQ = req.body || req.params;
-			var where;
+			var where = {};
 
 			if(req.headers['x-daimont-user']){
 				where = { "metadata.author" : req.headers['x-daimont-user'] };
@@ -90,7 +90,7 @@ module.exports = function(app, apiRoutes, io){
 
 
 		function remove(req, res){
-			var where;
+			var where = {} ;
 
 			if(req.headers['x-daimont-user']){
 				where = { "metadata.author" : req.headers['x-daimont-user'] };
