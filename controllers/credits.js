@@ -11,14 +11,12 @@ module.exports = function(app, apiRoutes, io){
 			var where;
 
 			if(req.headers['x-daimont-user']){
-				where = { "metadata.author" : req.headers['x-daimont-user']};
+				where = { "metadata._author" : req.headers['x-daimont-user'], "data.hidden" : false };
 			}
 
 			 Model.find( where || {} ).exec(function(err, rs){
 					if(!err){
-						res.status(200).json(rs.map(function(credit){
-							return credit.data.hidden ? null : credit; 
-						}));
+						res.status(200).json(rs);
 					}else{
 						res.json(err);
 					}
