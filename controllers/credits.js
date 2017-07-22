@@ -32,7 +32,7 @@ module.exports = function(app, apiRoutes, io){
 			var where;
 
 			if(req.headers['x-daimont-user']){
-				where = { "metadata.author" : req.headers['x-daimont-user'] };
+				where = { "metadata._author" : req.headers['x-daimont-user'] };
 			}
 
 			where._id = mongoose.Types.ObjectId(REQ.user);
@@ -70,7 +70,7 @@ module.exports = function(app, apiRoutes, io){
 			var where = {};
 
 			if(req.headers['x-daimont-user']){
-				where = { "metadata.author" : req.headers['x-daimont-user'] };
+				where = { "metadata._author" : req.headers['x-daimont-user'] };
 			}
 
 			where._id = mongoose.Types.ObjectId(req.params.id);
