@@ -32,7 +32,7 @@ apiRoutes.use(function(req, res, next) {
                 if(response && !response.error){
                     next();
                 }else{
-                  res.status(500).json(response);
+                  res.status(401).json(response);
                 }
             });
 
