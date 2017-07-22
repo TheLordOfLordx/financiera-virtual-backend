@@ -11,10 +11,10 @@ module.exports = function(app, apiRoutes, io){
 			var where;
 
 			if(req.headers['x-daimont-user']){
-				where = { "metadata.author" : req.headers['x-daimont-user'], "data.hidden" : false};
+				where = { "metadata.author" : req.headers['x-daimont-user']};
 			}
 
-			 Model.find( where ).exec(function(err, rs){
+			 Model.find( where ).where("data.hidden").equals(false).exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs);
 					}else{
