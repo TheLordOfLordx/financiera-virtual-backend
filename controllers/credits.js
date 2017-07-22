@@ -8,9 +8,10 @@ module.exports = function(app, apiRoutes, io){
 
 		function get(req, res){
 			var REQ = req.params; 
+			var where;
 
 			if(req.headers['x-daimont-user']){
-				var where = { "metadata._author" : req.headers['x-daimont-user'], "data.hidden"  : false };
+				where = { "metadata._author" : req.headers['x-daimont-user'], "data.hidden"  : false };
 			}
 
 			console.log("condition", where)
