@@ -54,7 +54,30 @@ module.exports = function(app, apiRoutes, io){
 
 			model.save(function(err, rs){
 				if(rs){
-					res.status(200).json(rs);
+		              var _html = _compiler.render({ _data : {
+		              	  user : data.name,
+		                  amount : data.data.amount[0],
+		                  interestsDays : data.data.interestsDays,
+		                  pay_day : data.data.pay_day,
+		                  system_quoteDays : data.data.system_quoteDays,
+		                  finance_quote : data.data.finance_quote,
+		                  ivaDays : data.data.ivaDays,
+		                  total_payment : data.data.total_payment
+		               }}, 'credit_resume/index.ejs');
+
+		              var data = {
+		                from: ' Daimont <noreply@daimont.com>',
+		                to: user.email,
+		                subject: 'Resumen de credito',
+		                text: 'Detalle y estado de su credito actual',
+		                html: _html
+		              };
+
+		              mailgun.messages().send(data, function (error, body) {
+		                console.log(body);
+		              });
+
+					  res.status(200).json(rs);
 				}else{
 					res.status(500).json(err);
 				}
