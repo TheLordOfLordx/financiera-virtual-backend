@@ -14,7 +14,8 @@ var _Schema = new Schema({
 });
 
 _Schema.pre('save', function (next) {
-  next();
+	this.data.hidden = false;
+  	next();
 });
 
 //add plugins

@@ -11,7 +11,7 @@ module.exports = function(app, apiRoutes, io){
 			var where;
 
 			if(req.headers['x-daimont-user']){
-				where = { "metadata._author" : req.headers['x-daimont-user'], "data.hidden" : true};
+				where = { "metadata._author" : req.headers['x-daimont-user'], "data.hidden" : false};
 			}
 
 			 Model.find( where || {} ).exec(function(err, rs){
