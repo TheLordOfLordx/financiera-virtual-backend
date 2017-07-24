@@ -60,7 +60,7 @@ module.exports = function(app, apiRoutes, io){
 			model.save(function(err, rs){
 				if(rs){
 		              var _html = _compiler.render({ _data : {
-		              	  user : data.name,
+		              	  user : data.first_name,
 		                  amount : data.data.amount[0],
 		                  interestsDays : data.data.interestsDays,
 		                  pay_day : data.data.pay_day,
