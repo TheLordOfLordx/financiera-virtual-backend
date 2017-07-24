@@ -5,6 +5,11 @@ module.exports = function(app, apiRoutes, io){
 		var path = require("path");
 		var mongoose = require('mongoose');
 		var Model = require(path.join("../", "models", _entity + ".js"));
+	    
+	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
+	    var api_key = 'key-7060b4df5bc7256cbdbe3f0f4933414a';
+	    var domain = 'daimont.com';
+	    var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 		function get(req, res){
 			var REQ = req.params; 
