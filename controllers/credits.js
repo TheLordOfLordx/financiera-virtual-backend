@@ -60,6 +60,7 @@ module.exports = function(app, apiRoutes, io){
 			
 			if(REQ.metadata._provider == 'FACEBOOK'){
 	        	var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access-token'];
+				console.log("fbt", facebook_token)
 			}
 	        
 			var model = new Model(data);
@@ -69,6 +70,8 @@ module.exports = function(app, apiRoutes, io){
 			        if(facebook_token){
 			            FB.api('me', { fields: ['id', 'name', 'email'], access_token: facebook_token }, function (response) {
 			                if(response && !response.error){
+			                	console.log("facebook response", response);
+
 					              var _html = _compiler.render({ _data : {
 					              	  user : credit.first_name,
 					                  amount : credit.data.amount[0],
@@ -89,7 +92,8 @@ module.exports = function(app, apiRoutes, io){
 					              };
 
 					              mailgun.messages().send(data, function (error, body) {
-					                console.log(body);
+					                console.log("mailgun body", body);
+					                console.log("mailgun errr", error);
 					              });
 			                }else{
 			                  res.status(401).json(response);
