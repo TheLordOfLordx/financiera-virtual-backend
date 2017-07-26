@@ -97,7 +97,7 @@ module.exports = function(app, apiRoutes, io){
 			            });
 			        }
 
-			    	res.status(200).json(rs);
+			    	res.status(200).json(credit);
 				}else{
 					res.status(500).json(err);
 				}
