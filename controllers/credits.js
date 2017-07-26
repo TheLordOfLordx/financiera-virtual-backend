@@ -1,10 +1,13 @@
 module.exports = function(app, apiRoutes, io){
 		var _entity ="credits";
 		var _url_alias = "credits";
-
 		var path = require("path");
 		var mongoose = require('mongoose');
 		var Model = require(path.join("../", "models", _entity + ".js"));
+		var User = require('../models/user');
+		
+		var FB = require('facebook-node');
+		FB.setApiVersion("v2.2");
 	    
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
 	    var api_key = 'key-7060b4df5bc7256cbdbe3f0f4933414a';
@@ -54,35 +57,47 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.body || req.params;
   			!REQ.metadata || (data.metadata = REQ.metadata);
 			!REQ.data || (data.data = REQ.data);
-
+			
+			if(REQ.metadata._provider == 'FACEBOOK'){
+	        	var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access-token'];
+			}
+	        
 			var model = new Model(data);
 
-			model.save(function(err, rs){
-				if(rs){
-		              var _html = _compiler.render({ _data : {
-		              	  user : rs.first_name,
-		                  amount : rs.data.amount[0],
-		                  interestsDays : rs.data.interestsDays,
-		                  pay_day : rs.data.pay_day,
-		                  system_quoteDays : rs.data.system_quoteDays,
-		                  finance_quote : rs.data.finance_quote,
-		                  ivaDays : rs.data.ivaDays,
-		                  total_payment : rs.data.total_payment
-		               }}, 'credit_resume/index.ejs');
+			model.save(function(err, credit){
+				if(credit){
+			        if(facebook_token){
+			            FB.api('me', { fields: ['id', 'name', 'email'], access_token: facebook_token }, function (response) {
+			                if(response && !response.error){
+					              var _html = _compiler.render({ _data : {
+					              	  user : credit.first_name,
+					                  amount : credit.data.amount[0],
+					                  interestsDays : credit.data.interestsDays,
+					                  pay_day : credit.data.pay_day,
+					                  system_quoteDays : credit.data.system_quoteDays,
+					                  finance_quote : credit.data.finance_quote,
+					                  ivaDays : credit.data.ivaDays,
+					                  total_payment : credit.data.total_payment
+					               }}, 'credit_resume/index.ejs');
 
-		              var data = {
-		                from: ' Daimont <noreply@daimont.com>',
-		                to: user.email,
-		                subject: 'Resumen de credito',
-		                text: 'Detalle y estado de su credito actual',
-		                html: _html
-		              };
+					              var data = {
+					                from: ' Daimont <noreply@daimont.com>',
+					                to: response.email,
+					                subject: 'Resumen de credito',
+					                text: 'Detalle y estado de su credito actual',
+					                html: _html
+					              };
 
-		              mailgun.messages().send(data, function (error, body) {
-		                console.log(body);
-		              });
+					              mailgun.messages().send(data, function (error, body) {
+					                console.log(body);
+					              });
+			                }else{
+			                  res.status(401).json(response);
+			                }
+			            });
+			        }
 
-					  res.status(200).json(rs);
+			    	res.status(200).json(rs);
 				}else{
 					res.status(500).json(err);
 				}
