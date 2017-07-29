@@ -18,6 +18,7 @@ var _Schema = new Schema({
 	  full_name : { type : String, trim : true, lowercase : true},
 	  email : { type : String, trim : true , unique : true, lowercase:true},
 	  data:{ type : Object},
+	  credit:{ type : Object},
 	  active : { type : Boolean, default : false},
 	  type : { type : String, trim : true, default : 'CLIENT'},
 	  _role : [{ type : Schema.Types.ObjectId , ref : 'Role'}],
