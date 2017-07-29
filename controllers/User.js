@@ -173,50 +173,43 @@ module.exports = function(app, apiRoutes){
 
     function recover(req, res){
         var REQ = req.body || req.params;
+
         User.findOne({ email : REQ.email}, function(err, rs){
             if(rs){
                   crypto.pseudoRandomBytes(30, function (err, raw) {
-                      rs.resetPasswordToken = raw.toString('hex');
-                      rs.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+                        rs.resetPasswordToken = raw.toString('hex');
+                        rs.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
-                      rs.save(function(err, rs){
-                          if(rs){
-                              res.status(200).json({message : "ok"});
+                        rs.save(function(err, rs){
+                            if(rs){
+                                var _html = _compiler.render({ _data : {
+                                    name : rs.name,
+                                    last_name : rs.last_name,
+                                    email : rs.email,
+                                    recover_url : config.base_url + "#/account/reset/" + user.resetPasswordToken
+                                 }}, 'recover/index.ejs');
 
-                              var _html;
-                              var mailOptions = {
-                                    from: "listerine1989@gmail.com",
-                                    to: rs.email,
-                                    subject: 'Recuperacion de Contraseña'
-                              }
+                                var data = {
+                                  from: ' Daimont <noreply@daimont.com>',
+                                  to: user.email,
+                                  subject: 'Cambiar Clave',
+                                  text: 'proceda con la recuperación de su cuenta',
+                                  html: _html
+                                };
 
-                              _html = _compiler.render({ _data : {
-                                url : rs.resetPasswordToken
-                                } }, 'recover/index.ejs');
+                                mailgun.messages().send(data, function (error, body) {
+                                  console.log(body);
+                                });
 
-                               mailOptions.html = _html;
-
-                              var _shell  = _batmanMailer.bulk([mailOptions]);
-
-                              _shell.stdout.on('data', function(output) {
-                                  console.log('stdout: ' + output);
-                              });
-
-                              _shell.stderr.on('data', function(output) {
-                                  console.log('stdout: ' + output);
-                              });
-
-                              _shell.on('close', function(code) {
-                                  console.log('closing code: ' + code);
-                              }); 
-                          }
-                          })
+                                res.status(200).json({ message : "ok" });
+                            }
+                        })
                       }) 
                   }else{
                       res.status(404).json({message : "user not found"})
                   }                    
                   
-                  }); 
+        }); 
     }
 
   function reset(req, res){
