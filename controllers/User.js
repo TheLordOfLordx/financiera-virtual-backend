@@ -2,6 +2,7 @@ module.exports = function(app, apiRoutes){
     var mongoose = require('mongoose');
     var user_manager = require('../models/user_manager');
     var path = require("path");
+    var credit = require('../models/credits');
     var config = require(process.env.PWD + '/config.js');
 
     var User = require('../models/user');
@@ -15,6 +16,7 @@ module.exports = function(app, apiRoutes){
     function create(req, res){
        var data = req.body;
        var password_text = req.body.password;
+       var credit = req.body.credit;
 
         user_manager.create(data, function(err, user){
           
@@ -22,7 +24,7 @@ module.exports = function(app, apiRoutes){
               res.status(409).json({code : 11000});
               return;
           }
-
+          
           if(user){
               var _html = _compiler.render({ _data : {
                   name : user.name,
