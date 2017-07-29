@@ -217,7 +217,7 @@ module.exports = function(app, apiRoutes){
       
       User.findOne({ resetPasswordToken: REQ.link, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
         if (!user) {
-            res.status(404).json({message: 'no user found or reset link has been expired'});
+          res.status(404).json({ message: 'no user found or reset link has been expired' });
         }else{
           user.password = require(process.env.PWD + "/helpers/crypto-util")(REQ.newpwd);
           user.resetPasswordToken = undefined;
@@ -225,7 +225,7 @@ module.exports = function(app, apiRoutes){
 
           user.save(function(err, rs){
               if(rs){
-                  res.status(200).json({message : "ok"});
+                  res.status(200).json({ status : true});
               }
           })
         }
