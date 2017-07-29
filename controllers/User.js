@@ -186,7 +186,7 @@ module.exports = function(app, apiRoutes){
                                     name : rs.name,
                                     last_name : rs.last_name,
                                     email : rs.email,
-                                    recover_url : config.base_url + "#/account/reset/" + user.resetPasswordToken
+                                    recover_url : config.base_url + "#/account/reset/" + rs.resetPasswordToken
                                  }}, 'recover/index.ejs');
 
                                 var data = {
