@@ -191,7 +191,7 @@ module.exports = function(app, apiRoutes){
 
                                 var data = {
                                   from: ' Daimont <noreply@daimont.com>',
-                                  to: user.email,
+                                  to: rs.email,
                                   subject: 'Cambiar Clave',
                                   text: 'proceda con la recuperación de su cuenta',
                                   html: _html
