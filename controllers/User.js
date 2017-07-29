@@ -30,7 +30,7 @@ module.exports = function(app, apiRoutes){
                   name : user.name,
                   last_name : user.last_name,
                   email : user.email,
-                  activation_url : config.base_url + "#/account/activate/" + user.activation_token
+                  activation_url : config.base_url + "account/activate/" + user.activation_token
                }}, 'activation/index.ejs');
 
               var data = {
@@ -186,7 +186,7 @@ module.exports = function(app, apiRoutes){
                                     name : rs.name,
                                     last_name : rs.last_name,
                                     email : rs.email,
-                                    recover_url : config.base_url + "#/account/reset/" + rs.resetPasswordToken
+                                    recover_url : config.base_url + "account/reset/" + rs.resetPasswordToken
                                  }}, 'recover/index.ejs');
 
                                 var data = {
