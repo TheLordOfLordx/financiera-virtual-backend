@@ -37,6 +37,7 @@ _Schema.pre('save', function (next) {
     	this.credit._user = mongoose.Types.ObjectId(this._id);
         
         this.data = this.data || {};
+        this.data.hidden = false;
         this.data.updated = false;
     	
         var new_credit = new credit(this.credit);
