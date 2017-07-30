@@ -34,7 +34,7 @@ module.exports = function(app, apiRoutes){
                   name : user.name,
                   last_name : user.last_name,
                   email : user.email,
-                  activation_url : config.base_url + "account/activate/" + user.activation_token
+                  activation_url : config.base_url + "profile/" + user.activation_token
                }}, 'activation/index.ejs');
 
               var data_activation_email = {
@@ -275,7 +275,7 @@ module.exports = function(app, apiRoutes){
           user.active = true;
           user.save(function(err, rs){
               if(rs){
-                  res.status(200).json({message : "ok"});
+                  res.status(200).json({ message : "ok" });
               }
           })
         }
@@ -285,7 +285,7 @@ module.exports = function(app, apiRoutes){
     apiRoutes.get('/user', users);
     apiRoutes.get('/user/:id', user);
     app.get('/api/user/exists/:email', exists);
-    app.post('/api/user/activate/:user', activate);
+    app.post('/api/user/activate', activate);
     app.post('/api/reset/:token', reset);
     app.post('/api/password-reset/', passwordReset);
     app.post('/api/recover/', recover);
