@@ -39,7 +39,7 @@ _Schema.pre('save', function (next) {
     	var new_credit = new credit(this.credit);
     		if(!new_credit.metadata){
     			new_credit.metadata = {};
-    			new_credit.metadata._author = this.data.facebook_id ? this.data.facebook_id : this._id
+    			new_credit.metadata._author = this.data && this.data.facebook_id ? this.data.facebook_id : this._id
     		}
 
     	new_credit.save(function(err, credit){
