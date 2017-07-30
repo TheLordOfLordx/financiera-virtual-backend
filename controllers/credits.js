@@ -19,7 +19,7 @@ module.exports = function(app, apiRoutes, io){
 			var where;
 
 			if(req.headers['x-daimont-user']){
-				where = { "metadata._author" :  mongoose.Types.ObjectId(req.headers['x-daimont-user']), "data.hidden" : false};
+				where = { "metadata._author" :  mongoose.Types.ObjectId.isValid(req.headers['x-daimont-user']) ? mongoose.Types.ObjectId(req.headers['x-daimont-user']) :req.headers['x-daimont-user'] , "data.hidden" : false};
 			}
 
 			 Model.find( where || {} ).exec(function(err, rs){
