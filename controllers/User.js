@@ -26,22 +26,45 @@ module.exports = function(app, apiRoutes){
           }
           
           if(user){
-              var _html = _compiler.render({ _data : {
+              var _html_activation = _compiler.render({ _data : {
                   name : user.name,
                   last_name : user.last_name,
                   email : user.email,
                   activation_url : config.base_url + "account/activate/" + user.activation_token
                }}, 'activation/index.ejs');
 
-              var data = {
+              var data_activation_email = {
                 from: ' Daimont <noreply@daimont.com>',
                 to: user.email,
                 subject: 'Activar Cuenta',
                 text: 'proceda con la activación de su cuenta',
-                html: _html
+                html: _html_activation
               };
 
-              mailgun.messages().send(data, function (error, body) {
+              mailgun.messages().send(data_activation_email, function (error, body) {
+                  if(data){
+                    if(credit){
+                        var _html_credit_resume = _compiler.render({ _data : {
+                            name : user.name,
+                            last_name : user.last_name,
+                            email : user.email
+                         }}, 'credit_resume/index.ejs');
+                         
+                        var data_credit_resume = {
+                          from: ' Daimont <noreply@daimont.com>',
+                          to: user.email,
+                          subject: 'Resumen de Credito',
+                          text: 'Estado y resumen de su actual credito',
+                          html: _html_credit_resume
+                        };
+
+                        mailgun.messages().send(data_credit_resume, function (error, body) {
+                          if(data){
+                              console.log("email request" body);
+                          }
+                        });                       
+                    }
+                  }
                 console.log(body);
               });
                   
