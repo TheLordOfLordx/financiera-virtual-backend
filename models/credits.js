@@ -14,7 +14,10 @@ var _Schema = new Schema({
 });
 
 _Schema.pre('save', function (next) {
-	this.data.hidden = false;
+	if(this.data){
+		this.data.hidden = false;
+	}
+	
   	next();
 });
 
