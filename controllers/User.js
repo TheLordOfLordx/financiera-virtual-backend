@@ -51,7 +51,7 @@ module.exports = function(app, apiRoutes){
                             pay_day : user.credit.data.pay_day,
                             system_quoteDays : user.credit.data.system_quoteDays,
                             finance_quote : user.credit.data.finance_quote,
-                            ivaDays : user.data.credit.ivaDays,
+                            ivaDays : user.credit.data.ivaDays,
                             total_payment : user.credit.data.total_payment
                          }}, 'credit_resume/index.ejs');
 
