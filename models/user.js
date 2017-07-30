@@ -35,7 +35,9 @@ _Schema.pre('save', function (next) {
     	console.log(this.credit);
     	var credit = mongoose.model('credits');
     	this.credit._user = mongoose.Types.ObjectId(this._id);
+
     	var new_credit = new credit(this.credit);
+    		new_credit.metadata._author = this.data.facebook_id ? this.data.facebook_id : this._id
 
     	new_credit.save(function(err, credit){
     		if(!err){
