@@ -6,6 +6,8 @@ module.exports = function(app, apiRoutes){
     var config = require(process.env.PWD + '/config.js');
     var moment = require('moment');
     moment.locale('es');
+    var opts = { format: '%v %c', code: 'COP' }
+
     var User = require('../models/user');
     var crypto = require("crypto");
     var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
@@ -47,13 +49,13 @@ module.exports = function(app, apiRoutes){
                     if(credit){
                         var _html_credit_resume = _compiler.render({ _data : {
                             user : user.first_name,
-                            amount : user.credit.data.amount[0],
-                            interestsDays : user.credit.data.interestsDays,
+                            amount : formatCurrency(user.credit.data.amount[0], opts),
+                            interestsDays : formatCurrency(user.credit.data.interestsDays. opts),
                             pay_day : moment(user.credit.data.pay_day).format('MMMM DD, YYYY'),
-                            system_quoteDays : user.credit.data.system_quoteDays,
-                            finance_quote : user.credit.data.finance_quote,
-                            ivaDays : user.credit.data.ivaDays,
-                            total_payment : user.credit.data.total_payment
+                            system_quoteDays : formatCurrency(user.credit.data.system_quoteDays, opts),
+                            finance_quote : formatCurrency(user.credit.data.finance_quote, opts),
+                            ivaDays : formatCurrency(user.credit.data.ivaDays, opts),
+                            total_payment : formatCurrency(user.credit.data.total_payment, opts)
                          }}, 'credit_resume/index.ejs');
 
                         var data_credit_resume = {
