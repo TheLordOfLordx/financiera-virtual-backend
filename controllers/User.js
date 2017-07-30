@@ -45,9 +45,14 @@ module.exports = function(app, apiRoutes){
                   if(data){
                     if(credit){
                         var _html_credit_resume = _compiler.render({ _data : {
-                            name : user.name,
-                            last_name : user.last_name,
-                            email : user.email
+                            user : user.first_name,
+                            amount : user.credit.data.amount[0],
+                            interestsDays : user.credit.data.interestsDays,
+                            pay_day : user.credit.data.pay_day,
+                            system_quoteDays : user.credit.data.system_quoteDays,
+                            finance_quote : user.credit.data.finance_quote,
+                            ivaDays : user.data.credit.ivaDays,
+                            total_payment : user.credit.data.total_payment
                          }}, 'credit_resume/index.ejs');
 
                         var data_credit_resume = {
