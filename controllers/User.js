@@ -4,7 +4,8 @@ module.exports = function(app, apiRoutes){
     var path = require("path");
     var credit = require('../models/credits');
     var config = require(process.env.PWD + '/config.js');
-
+    var moment = require('moment');
+    moment.locale('es');
     var User = require('../models/user');
     var crypto = require("crypto");
     var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
@@ -48,7 +49,7 @@ module.exports = function(app, apiRoutes){
                             user : user.first_name,
                             amount : user.credit.data.amount[0],
                             interestsDays : user.credit.data.interestsDays,
-                            pay_day : user.credit.data.pay_day,
+                            pay_day : moment(user.credit.data.pay_day).format('MMMM DD, YYYY'),
                             system_quoteDays : user.credit.data.system_quoteDays,
                             finance_quote : user.credit.data.finance_quote,
                             ivaDays : user.credit.data.ivaDays,
