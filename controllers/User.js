@@ -49,7 +49,7 @@ module.exports = function(app, apiRoutes){
                             last_name : user.last_name,
                             email : user.email
                          }}, 'credit_resume/index.ejs');
-                         
+
                         var data_credit_resume = {
                           from: ' Daimont <noreply@daimont.com>',
                           to: user.email,
@@ -60,12 +60,12 @@ module.exports = function(app, apiRoutes){
 
                         mailgun.messages().send(data_credit_resume, function (error, body) {
                           if(data){
-                              console.log("email request" body);
+                              console.log("email request", body);
                           }
                         });                       
                     }
                   }
-                console.log(body);
+                console.log("email request", body);
               });
                   
               res.status(200).json(user);
