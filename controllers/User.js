@@ -267,19 +267,12 @@ module.exports = function(app, apiRoutes){
 
   function activate(req, res){
       var REQ = req.body || req.params;
-      
-      User.findOne( { activation_token: REQ.activation_token  } , function(err, user) {
-        if (!user) {
-            res.status(404).json({message: 'no user found or activation link has been expired'});
-        }else{
-          user.active = true;
-          user.save(function(err, rs){
-              if(rs){
-                  res.status(200).json({ message : "ok" });
-              }
-          })
+
+      Tank.update({ activation_token: REQ.activation_token  }}, { $set: { active: true }},  function(err, user) {
+        if(!err){
+            res.status(200).json(user)
         }
-      });      
+      });
   }
 
     apiRoutes.get('/user', users);
