@@ -268,7 +268,7 @@ module.exports = function(app, apiRoutes){
   function activate(req, res){
       var REQ = req.body || req.params;
 
-      Tank.update({ activation_token: REQ.activation_token  }}, { $set: { active: true }},  function(err, user) {
+      Tank.update({ activation_token: REQ.activation_token  }, { $set: { active: true }},  function(err, user) {
         if(!err){
             res.status(200).json(user)
         }
