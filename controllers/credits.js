@@ -22,7 +22,7 @@ module.exports = function(app, apiRoutes, io){
 				where = { "metadata._author" :  mongoose.Types.ObjectId.isValid(req.headers['x-daimont-user']) ? mongoose.Types.ObjectId(req.headers['x-daimont-user']) :req.headers['x-daimont-user'] , "data.hidden" : false};
 			}
 
-			 Model.find( where || {} ).populate({ path: 'metadata._author', model: 'User' }).exec(function(err, rs){
+			 Model.find( where || {} ).populate("_user").exec(function(err, rs){
 					if(!err){
 						res.status(200).json(rs);
 					}else{
