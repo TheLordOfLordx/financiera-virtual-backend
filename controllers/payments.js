@@ -53,12 +53,10 @@ module.exports = function(app, apiRoutes, io){
 			var REQ = req.body || req.params;
   			!REQ.metadata || (data.metadata = REQ.metadata);
 			!REQ.data || (data.data = REQ.data);
-			
-			if(REQ.metadata._provider == 'FACEBOOK'){
-	        	var facebook_token = req.body.access_token  || req.query.access_token  || req.headers['access-token'];
-				console.log("fbt", facebook_token)
-			}
-	        
+
+			data.metadata = data.metadata || {};
+			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
+
 			var model = new Model(data);
 			
 			model.save(function(err, credit){
@@ -81,8 +79,6 @@ module.exports = function(app, apiRoutes, io){
 			}
 
 			where._id = mongoose.Types.ObjectId(req.params.id);
-
-
 
 			!REQ.data || (data.data = REQ.data); 
 
