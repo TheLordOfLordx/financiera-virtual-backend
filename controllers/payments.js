@@ -85,7 +85,7 @@ module.exports = function(app, apiRoutes, io){
 
 		function post(req, res){
 			
-			console.log("file" , req.file.path);
+			console.log("file" , req.files);
 			var data = {};
 			var REQ = req.body || req.params;
   			!REQ.metadata || (data.metadata = REQ.metadata);
