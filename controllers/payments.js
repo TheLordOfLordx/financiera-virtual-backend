@@ -5,7 +5,7 @@ module.exports = function(app, apiRoutes, io){
 		var mongoose = require('mongoose');
 		var Model = require(path.join("../", "models", _entity + ".js"));
     	var crypto = require("crypto");
-	    
+	   	var config = require(path.join(process.env.PWD , "config.js"));
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
 
     	var multer  =   require('multer');
@@ -30,7 +30,7 @@ module.exports = function(app, apiRoutes, io){
 	        storage: multerS3({
 	            s3: s3,
 	            acl: 'public-read',
-	            bucket: 'daimontstorage',
+	            bucket: config.bucket_name,
 	            contentType: multerS3.AUTO_CONTENT_TYPE,
 	            metadata: function (req, file, cb) {
 	              cb(null, {fieldName: file.fieldname});
@@ -85,7 +85,7 @@ module.exports = function(app, apiRoutes, io){
 
 		function post(req, res){
 			
-			console.log("body" , req.body);
+			console.log("file" , req.file.path);
 			var data = {};
 			var REQ = req.body || req.params;
   			!REQ.metadata || (data.metadata = REQ.metadata);
@@ -97,6 +97,7 @@ module.exports = function(app, apiRoutes, io){
 
 			data.data.payday = req.body.payday;
 			data.data.bank = req.body.bank;
+			data.data.transaction = 'https://s3-us-west-2.amazonaws.com/' + config.bucket_name;
 			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
 			data.metadata = data.metadata || {};
 			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
