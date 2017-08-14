@@ -8,6 +8,8 @@ module.exports = function(app, apiRoutes, io){
 	    var _compiler = require(path.join(process.env.PWD , "helpers", "mailer.js"));
 
     	var multer  =   require('multer');
+   		var multerS3 = require('multer-s3');
+
     	var aws = require("aws-sdk");
 
 	    var api_key = process.env.MAILGUN_API_KEY || null;;
