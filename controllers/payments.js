@@ -56,12 +56,13 @@ module.exports = function(app, apiRoutes, io){
 
 			data.metadata = data.metadata || {};
 			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
+			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
 
 			var model = new Model(data);
 			
-			model.save(function(err, credit){
-				if(credit){
-			    	res.status(200).json(credit);
+			model.save(function(err, payment){
+				if(payment){
+			    	res.status(200).json(payment);
 				}else{
 					res.status(500).json(err);
 				}
