@@ -54,8 +54,8 @@ module.exports = function(app, apiRoutes, io){
   			!REQ.metadata || (data.metadata = REQ.metadata);
 			!REQ.data || (data.data = REQ.data);
 
-			data.payday = REQ.payday;
-			data.bank = REQ.bank;
+			data.data.payday = req.body.payday;
+			data.data.bank = req.body.bank;
 			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
 			data.metadata = data.metadata || {};
 			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
