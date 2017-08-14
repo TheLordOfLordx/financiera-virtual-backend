@@ -49,6 +49,8 @@ module.exports = function(app, apiRoutes, io){
 		}
 
 		function post(req, res){
+			
+			console.log("body" , req.body);
 			var data = {};
 			var REQ = req.body || req.params;
   			!REQ.metadata || (data.metadata = REQ.metadata);
@@ -57,7 +59,7 @@ module.exports = function(app, apiRoutes, io){
 			if(!data.data){
 				data.data = {};
 			}
-			
+
 			data.data.payday = req.body.payday;
 			data.data.bank = req.body.bank;
 			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
