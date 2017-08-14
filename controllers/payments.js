@@ -84,8 +84,6 @@ module.exports = function(app, apiRoutes, io){
 		}
 
 		function post(req, res){
-			
-			console.log("file" ,req.file);
 			var data = {};
 			var REQ = req.body || req.params;
   			!REQ.metadata || (data.metadata = REQ.metadata);
@@ -97,7 +95,7 @@ module.exports = function(app, apiRoutes, io){
 
 			data.data.payday = req.body.payday;
 			data.data.bank = req.body.bank;
-			data.data.transaction = 'https://s3-us-west-2.amazonaws.com/' + config.bucket_name;
+			data.data.transaction = req.file.location;
 			data._user = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
 			data.metadata = data.metadata || {};
 			data.metadata._author = mongoose.Types.ObjectId(req.headers['x-daimont-user']);
