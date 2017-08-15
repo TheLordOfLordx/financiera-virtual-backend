@@ -3,6 +3,7 @@ module.exports = {
 	secret : "$daimont.2017",
 	appPort : 8080,
 	bucket_name : 'daimontstorage',
+	email_recipient : 'listerine1989@gmail.com',
 	base_url : 'http://www.daimont.com/frontend/dist/#/',
 	smtp_email : "listerine1989@gmail.com",
 	smtp_password : 'house1989*',

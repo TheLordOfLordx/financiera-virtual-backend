@@ -1,6 +1,12 @@
 var express = require("express");
 var app = express();
-var http = require('http').Server(app);
+
+var options = {
+  key: fs.readFileSync('daimont.key'),
+  cert: fs.readFileSync('daimont.crt')
+};
+
+var https = require('https').Server(options, app);
 var config = require("./config");
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
@@ -20,6 +26,7 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(morgan('dev'));
 app.set("secret", config.secret);
 process.env.PWD = process.cwd() || process.env.PWD;
+
 
 apiRoutes = express.Router();
 
@@ -88,7 +95,7 @@ apiRoutes.use(function (err, req, res, next) {
     console.log(err);
 });
 
-var io = require("socket.io")(http);
+var io = require("socket.io")(https);
 var turns = io;
 
 io.on('connection', function(socket){
@@ -104,7 +111,7 @@ mongoose.connection.on('open', function(ref){
     require("./controllers/all")(app, apiRoutes, io); 
     app.use("/api", apiRoutes);
 
-    http.listen(config.appPort, function(){
+    https.listen(config.appPort, function(){
         console.log("app listen on " + config.appPort);
     }); 
 });
