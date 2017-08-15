@@ -1,14 +1,15 @@
 var express = require("express");
 var app = express();
 var fs = require('fs');
+var config = require("./config");
 
 var options = {
-  key: fs.readFileSync('daimont.key'),
-  cert: fs.readFileSync('daimont.crt')
+  key: fs.readFileSync('daimont.key', 'utf8'),
+  cert: fs.readFileSync('daimont.crt', 'utf8'),
+  passphrase: config.ssl_phrase
 };
 
 var https = require('https').Server(options, app);
-var config = require("./config");
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
 var cors = require('cors');
