@@ -113,7 +113,7 @@ mongoose.connection.on('open', function(ref){
     require("./controllers/all")(app, apiRoutes, io); 
     app.use("/api", apiRoutes);
 
-    https.listen(config.appPort, function(){
+    https.listen(function(){
         console.log("app listen on " + config.appPort);
     }); 
 });
