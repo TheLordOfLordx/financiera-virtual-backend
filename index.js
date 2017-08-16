@@ -3,10 +3,12 @@ var app = express();
 var fs = require('fs');
 var config = require("./config");
 
+var privateKey = fs.readFileSync('privatekey.pem');
+var certificate = fs.readFileSync('certificate.pem');
+
 var options = {
-  key: fs.readFileSync('daimont.key', 'utf8'),
-  cert: fs.readFileSync('daimont.crt', 'utf8'),
-  passphrase: config.ssl_phrase
+  key: privateKey,
+  cert: certificate
 };
 
 var https = require('https').Server(options, app);
@@ -113,7 +115,7 @@ mongoose.connection.on('open', function(ref){
     require("./controllers/all")(app, apiRoutes, io); 
     app.use("/api", apiRoutes);
 
-    https.listen(function(){
+    https.listen(config.appPort, function(){
         console.log("app listen on " + config.appPort);
     }); 
 });
